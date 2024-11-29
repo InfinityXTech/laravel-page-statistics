@@ -1,74 +1,91 @@
-# :package_description
+# This is my package laravel-page-statistics
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/infinityxtech/laravel-page-statistics.svg?style=flat-square)](https://packagist.org/packages/infinityxtech/laravel-page-statistics)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/infinityxtech/laravel-page-statistics/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/infinityxtech/laravel-page-statistics/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/infinityxtech/laravel-page-statistics/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/infinityxtech/laravel-page-statistics/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/infinityxtech/laravel-page-statistics.svg?style=flat-square)](https://packagist.org/packages/infinityxtech/laravel-page-statistics)
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+Simple package for collection visited page statistic.
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require :vendor_slug/:package_slug
+composer require infinityxtech/laravel-page-statistics
 ```
 
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
+php artisan vendor:publish --tag="laravel-page-statistics-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-config"
+php artisan vendor:publish --tag="laravel-page-statistics-config"
 ```
 
 This is the contents of the published config file:
 
 ```php
 return [
+    'geoip_db_path' => null
 ];
 ```
 
-Optionally, you can publish the views using
+In case you need to update config of packages used here, check docs for:
 
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
-```
+- [cyrildewit/eloquent-viewable](https://github.com/cyrildewit/eloquent-viewable)
+- [geoip2/geoip2](https://github.com/maxmind/GeoIP2-php)
+- [matomo/device-detector](https://github.com/matomo-org/device-detector)
 
 ## Usage
 
+First it is same as for eloquent-viewable you need to add these to your model:
+
 ```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
+use Illuminate\Database\Eloquent\Model;
+use CyrildeWit\EloquentViewable\InteractsWithViews;
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
+
+class Post extends Model implements Viewable
+{
+    use InteractsWithViews;
+
+    // ...
+}
 ```
 
-## Testing
+Then, you can use this code to save stats to database:
 
-```bash
-composer test
+```php
+// Route model binding example
+
+Route::get('/post/{slug}', function (Post $post) {
+
+    $pageStatistics = new InfinityXTech\PageStatistics();
+
+    $view = $pageStatistics->record($post);
+
+});
+
+```
+
+There is also a method to get details that are stored.
+
+```php
+
+    $pageStatistics = new InfinityXTech\PageStatistics();
+
+    $details = $pageStatistics->getDetails();
+
+    // do whatever with $details
+
+    $view = $pageStatistics->record($post, $details);
+
 ```
 
 ## Changelog
@@ -85,7 +102,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [InfinityXTech](https://github.com/InfinityXTech)
 - [All Contributors](../../contributors)
 
 ## License
