@@ -18,14 +18,14 @@ composer require infinityxtech/laravel-page-statistics
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-page-statistics-migrations"
+php artisan vendor:publish --tag="page-statistics-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-page-statistics-config"
+php artisan vendor:publish --tag="page-statistics-config"
 ```
 
 This is the contents of the published config file:

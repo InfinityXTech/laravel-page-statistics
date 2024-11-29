@@ -4,7 +4,6 @@ namespace InfinityXTech\PageStatistics;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use InfinityXTech\PageStatistics\Commands\PageStatisticsCommand;
 
 class PageStatisticsServiceProvider extends PackageServiceProvider
 {
@@ -18,8 +17,7 @@ class PageStatisticsServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-page-statistics')
             ->hasConfigFile()
-            ->hasMigration('create_laravel_page_statistics_table')
-            ->hasCommand(PageStatisticsCommand::class);
+            ->hasMigration('create_page_statistics_tables');
     }
 
     /**
@@ -29,9 +27,11 @@ class PageStatisticsServiceProvider extends PackageServiceProvider
      */
     public function register()
     {
+        parent::register();
+
         app()->bind(
             \CyrildeWit\EloquentViewable\Contracts\Views::class,
-            \App\Models\Views::class
+            \InfinityXTech\PageStatistics\Models\Views::class
         );
     }
 }

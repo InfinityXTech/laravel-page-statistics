@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace InfinityXTech\PageStatistics\Models;
 
 use CyrildeWit\EloquentViewable\Views as EloquentViewableViews;
 use CyrildeWit\EloquentViewable\Contracts\View as ViewContract;
